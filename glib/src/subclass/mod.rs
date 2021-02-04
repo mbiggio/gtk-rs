@@ -254,6 +254,8 @@ pub mod object;
 #[macro_use]
 pub mod boxed;
 
+pub mod shared;
+
 pub mod signal;
 
 pub mod prelude {
