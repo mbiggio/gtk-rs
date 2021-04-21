@@ -25,8 +25,9 @@ where
     type InnerType = T;
 
     unsafe fn ref_(this: *const Self::InnerType) -> *const Self::InnerType {
-        std::sync::Arc::increment_strong_count(this);
-        this
+        use std::mem::ManuallyDrop;
+        let this_rc = ManuallyDrop::new(std::sync::Arc::from_raw(this));
+        std::sync::Arc::into_raw(ManuallyDrop::take(&mut this_rc.clone()))
     }
 
     unsafe fn into_raw(self) -> *const Self::InnerType {
